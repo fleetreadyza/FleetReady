@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FleetReady — Never Get Caught at a Roadblock Again</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #00C875;
+      --green-dim: #00a85e;
+      --orange: #FF6B35;
+      --navy: #0B1220;
+      --navy-mid: #111827;
+      --navy-light: #1a2535;
+      --border: rgba(255,255,255,0.07);
+      --text-muted: #6b7a99;
+      --text-light: #c8d0e0;
+      --white: #f0f4ff;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 6%;
+      background: rgba(11,18,32,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--white); }
+    .logo span { color: var(--green); }
+    nav a.nav-cta {
+      background: var(--green); color: #000;
+      padding: 10px 22px; border-radius: 6px;
+      font-weight: 600; font-size: 0.9rem;
+      text-decoration: none; transition: background 0.2s;
+    }
+    nav a.nav-cta:hover { background: var(--green-dim); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 140px 6% 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(0,200,117,0.13) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,200,117,0.1); border: 1px solid rgba(0,200,117,0.25);
+      border-radius: 999px; padding: 6px 18px;
+      font-size: 0.82rem; font-weight: 500; color: var(--green);
+      margin-bottom: 28px;
+    }
+    .badge::before { content: '●'; font-size: 0.6rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -1.5px; max-width: 800px;
+      margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: var(--green); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      color: var(--text-light); max-width: 520px;
+      line-height: 1.7; margin-bottom: 44px; font-weight: 300;
+    }
+
+    .btn-primary {
+      background: var(--green); color: #000;
+      padding: 16px 36px; border-radius: 8px;
+      font-weight: 700; font-size: 1rem;
+      text-decoration: none; transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(0,200,117,0.25);
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--green-dim); transform: translateY(-2px); }
+
+    .hero-stat-row {
+      display: flex; gap: 48px; margin-top: 70px;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; }
+    .stat-num span { color: var(--green); }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* SECTION SHARED */
+    .section-label {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 700; letter-spacing: -0.8px;
+      max-width: 600px; line-height: 1.15; margin-bottom: 52px;
+    }
+
+    /* PAIN */
+    .pain {
+      padding: 100px 6%;
+      background: var(--navy-mid);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .pain-card {
+      background: var(--navy); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px;
+      position: relative; overflow: hidden;
+    }
+    .pain-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--orange), transparent);
+    }
+    .pain-icon { font-size: 2rem; margin-bottom: 14px; }
+    .pain-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 10px; }
+    .pain-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* HOW */
+    .how { padding: 100px 6%; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 22px; margin-top: 52px; }
+    .step {
+      background: var(--navy-light); border: 1px solid var(--border);
+      border-radius: 14px; padding: 30px 26px;
+    }
+    .step-num {
+      font-family: 'Syne', sans-serif; font-size: 2.8rem; font-weight: 800;
+      color: rgba(0,200,117,0.12); line-height: 1; margin-bottom: 14px;
+    }
+    .step h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+    .step p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* DASHBOARD */
+    .preview { padding: 0 6% 100px; display: flex; justify-content: center; }
+    .dashboard-mock {
+      background: var(--navy-light); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px; width: 100%; max-width: 820px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+    }
+    .mock-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+    .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mock-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; margin-left: 8px; }
+    .mock-rows { display: flex; flex-direction: column; gap: 10px; }
+    .mock-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--navy); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px; flex-wrap: wrap; gap: 8px;
+    }
+    .mock-name { font-size: 0.9rem; font-weight: 500; min-width: 140px; }
+    .mock-doc { font-size: 0.8rem; color: var(--text-muted); }
+    .mock-date { font-size: 0.8rem; color: var(--text-muted); }
+    .status-pill { font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 999px; }
+    .s-green { background: rgba(0,200,117,0.12); color: var(--green); }
+    .s-orange { background: rgba(255,107,53,0.12); color: var(--orange); }
+    .s-red { background: rgba(255,60,60,0.12); color: #ff4444; }
+
+    /* PRICING */
+    .pricing {
+      padding: 100px 6%;
+      background: var(--navy-mid);
+      border-top: 1px solid var(--border);
+    }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 24px; max-width: 960px;
+    }
+    .plan {
+      background: var(--navy); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 30px;
+      position: relative; transition: transform 0.2s, border-color 0.2s;
+    }
+    .plan:hover { transform: translateY(-4px); border-color: rgba(0,200,117,0.3); }
+    .plan.featured { border-color: var(--green); box-shadow: 0 0 40px rgba(0,200,117,0.1); }
+    .featured-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--green); color: #000;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: 4px 14px; border-radius: 999px; white-space: nowrap;
+    }
+    .plan-name {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem;
+      color: var(--text-muted); margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .plan-price { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.8rem; line-height: 1; margin-bottom: 4px; }
+    .plan-price sup { font-size: 1.1rem; vertical-align: super; }
+    .plan-period { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+    .plan-vehicles { font-size: 0.82rem; color: var(--green); font-weight: 500; margin-bottom: 26px; }
+    .plan-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 22px; }
+    .plan-features { list-style: none; margin-bottom: 30px; }
+    .plan-features li {
+      font-size: 0.88rem; color: var(--text-light);
+      padding: 7px 0; display: flex; align-items: flex-start; gap: 10px; line-height: 1.4;
+    }
+    .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .plan-features li.no::before { content: '✗'; color: var(--text-muted); }
+    .plan-features li.no { color: var(--text-muted); }
+    .btn-plan {
+      display: block; width: 100%; text-align: center;
+      padding: 14px; border-radius: 8px;
+      font-weight: 700; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+    }
+    .btn-plan-primary { background: var(--green); color: #000; }
+    .btn-plan-primary:hover { background: var(--green-dim); }
+    .btn-plan-outline { background: transparent; color: var(--white); border: 1px solid var(--border); }
+    .btn-plan-outline:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+    /* FAQ */
+    .faq { padding: 100px 6%; max-width: 760px; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 24px 0; }
+    .faq-q { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1rem; margin-bottom: 10px; }
+    .faq-a { font-size: 0.9rem; color: var(--text-muted); line-height: 1.75; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 36px 6%;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    footer p { font-size: 0.82rem; color: var(--text-muted); }
+    footer a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; }
+    footer a:hover { color: var(--white); }
+
+    /* ANIMATIONS */
+    .fade-up { opacity: 0; transform: translateY(24px); animation: fadeUp 0.7s forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.22s; }
+    .d3 { animation-delay: 0.36s; } .d4 { animation-delay: 0.5s; }
+
+    @media(max-width:600px) {
+      .hero-stat-row { gap: 24px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      nav a.nav-cta { padding: 8px 14px; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Fleet<span>Ready</span></div>
+  <a href="#pricing" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge fade-up">Made for South African transport owners</div>
+  <h1 class="fade-up d1">Stop losing money to<br/><em>expired documents.</em></h1>
+  <p class="hero-sub fade-up d2">FleetReady keeps track of every truck and driver document in your fleet — and lets you know before anything expires. No more roadblock surprises.</p>
+  <a href="#pricing" class="btn-primary fade-up d3">Choose Your Plan</a>
+  <div class="hero-stat-row fade-up d4">
+    <div class="stat">
+      <div class="stat-num">R<span>5,000</span>+</div>
+      <div class="stat-label">Average roadblock fine</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>30</span> days</div>
+      <div class="stat-label">Early warning alerts</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>3</span> min</div>
+      <div class="stat-label">To add a vehicle</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="section-label">Sound Familiar?</div>
+  <h2 class="section-title">Every transport owner knows this feeling.</h2>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">😬</div>
+      <h3>You track it all in your head</h3>
+      <p>COFs, PrDPs, operating licenses — all expiring on different dates. One forgotten renewal and you're paying thousands.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🚔</div>
+      <h3>You find out at a roadblock</h3>
+      <p>A traffic officer stops your truck. Document expired. R5,000+ fine. Truck impounded. Delivery missed. Client angry.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📞</div>
+      <h3>You chase your drivers forever</h3>
+      <p>You remind your driver ten times to go renew his PrDP. He still doesn't go. Now you're stuck.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📄</div>
+      <h3>The renewal admin is a nightmare</h3>
+      <p>Booking appointments, filling forms, following up with NATIS — it eats up hours you don't have.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">Set it up once. It runs itself.</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Add your trucks and drivers</h3>
+      <p>Enter each vehicle and driver with their document expiry dates. Takes about 3 minutes per vehicle — no technical skills needed.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>See everything at a glance</h3>
+      <p>Your dashboard shows every document in your fleet — green means fine, orange means expiring soon, red means expired. Simple.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Get WhatsApp alerts early</h3>
+      <p>30 days before anything expires, you get a WhatsApp message. No surprises, no last-minute panic, no fines.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>We sort the renewal for you</h3>
+      <p>On Pro — we book the appointment, fill in the forms, and WhatsApp your driver exactly what to bring. You do nothing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="preview">
+  <div class="dashboard-mock">
+    <div class="mock-bar">
+      <div class="mock-dot" style="background:#ff5f57"></div>
+      <div class="mock-dot" style="background:#febc2e"></div>
+      <div class="mock-dot" style="background:#28c840"></div>
+      <div class="mock-title">FleetReady — My Fleet Dashboard</div>
+    </div>
+    <div class="mock-rows">
+      <div class="mock-row">
+        <div class="mock-name">🚛 Truck CA 123-456</div>
+        <div class="mock-doc">COF Certificate</div>
+        <div class="mock-date">Expires Dec 2026</div>
+        <div class="status-pill s-green">● All Good</div>
+      </div>
+      <div class="mock-row">
+        <div class="mock-name">👤 Sipho Mthembu</div>
+        <div class="mock-doc">PrDP Permit</div>
+        <div class="mock-date">Expires Jul 2025</div>
+        <div class="status-pill s-orange">⚠ Expiring Soon</div>
+      </div>
+      <div class="mock-row">
+        <div class="mock-name">🚛 Truck GP 789-012</div>
+        <div class="mock-doc">Operating License</div>
+        <div class="mock-date">Expired Jun 2025</div>
+        <div class="status-pill s-red">✗ Expired</div>
+      </div>
+      <div class="mock-row">
+        <div class="mock-name">👤 Thabo Khumalo</div>
+        <div class="mock-doc">PrDP Permit</div>
+        <div class="mock-date">Expires Mar 2027</div>
+        <div class="status-pill s-green">● All Good</div>
+      </div>
+      <div class="mock-row">
+        <div class="mock-name">🚛 Truck KZN 345-678</div>
+        <div class="mock-doc">Roadworthy Certificate</div>
+        <div class="mock-date">Expires Aug 2025</div>
+        <div class="status-pill s-orange">⚠ Expiring Soon</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Pick what works for your fleet size.</h2>
+  <div class="pricing-grid">
+
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><sup>R</sup>499</div>
+      <div class="plan-period">per month</div>
+      <div class="plan-vehicles">Up to 5 vehicles</div>
+      <hr class="plan-divider"/>
+      <ul class="plan-features">
+        <li>Track all your documents in one place</li>
+        <li>Green / orange / red dashboard</li>
+        <li>WhatsApp alerts 30 days before expiry</li>
+        <li>Add unlimited drivers</li>
+        <li class="no">Renewal admin handled for you</li>
+        <li class="no">NATIS appointment booking</li>
+      </ul>
+      <a href="#" class="btn-plan btn-plan-outline">Get Started</a>
+    </div>
+
+    <div class="plan featured">
+      <div class="featured-badge">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><sup>R</sup>999</div>
+      <div class="plan-period">per month</div>
+      <div class="plan-vehicles">Up to 15 vehicles</div>
+      <hr class="plan-divider"/>
+      <ul class="plan-features">
+        <li>Track all your documents in one place</li>
+        <li>Green / orange / red dashboard</li>
+        <li>WhatsApp alerts 30 days before expiry</li>
+        <li>Add unlimited drivers</li>
+        <li>We handle all renewal admin for you</li>
+        <li>NATIS appointment booked automatically</li>
+      </ul>
+      <a href="#" class="btn-plan btn-plan-primary">Get Started</a>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Fleet</div>
+      <div class="plan-price"><sup>R</sup>1,999</div>
+      <div class="plan-period">per month</div>
+      <div class="plan-vehicles">Up to 40 vehicles</div>
+      <hr class="plan-divider"/>
+      <ul class="plan-features">
+        <li>Track all your documents in one place</li>
+        <li>Green / orange / red dashboard</li>
+        <li>WhatsApp alerts 30 days before expiry</li>
+        <li>Add unlimited drivers</li>
+        <li>We handle all renewal admin for you</li>
+        <li>NATIS appointment booked automatically</li>
+      </ul>
+      <a href="#" class="btn-plan btn-plan-outline">Get Started</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="section-label">Questions</div>
+  <h2 class="section-title">You probably want to know...</h2>
+  <div class="faq-item">
+    <div class="faq-q">What documents does FleetReady track?</div>
+    <div class="faq-a">COF (Certificate of Fitness), PrDP (Professional Driver's Permit), operating licenses, roadworthy certificates, and driver's licenses. Basically anything with an expiry date on your fleet.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How does the renewal admin work on Pro?</div>
+    <div class="faq-a">When a document is getting close to expiry, we book the NATIS appointment, fill in the forms, and send your driver a WhatsApp with exactly what to bring and where to go. You don't have to lift a finger.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Does my driver need to download anything?</div>
+    <div class="faq-a">No. Your drivers just get WhatsApp messages. No app to download, no logins. You manage everything from your dashboard.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How long does it take to get set up?</div>
+    <div class="faq-a">About 3 minutes per vehicle. You add the vehicle, upload the document, and FleetReady does the rest.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Can I cancel anytime?</div>
+    <div class="faq-a">Yes. No contracts, no cancellation fees. Cancel any time straight from your account.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Fleet<span>Ready</span></div>
+  <p>© 2026 FleetReady. Built for South Africa.</p>
+  <div style="display:flex;gap:20px">
+    <a href="mailto:hello@fleetready.co.za">Contact Us</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+</body>
+</html>
